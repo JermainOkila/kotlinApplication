@@ -46,6 +46,16 @@ fun SplashScreen(navController: NavHostController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+
+        Text(
+            text = "Calling",
+            color = PrimaryPurple,
+            fontSize = 32.sp,
+            fontWeight = FontWeight.Bold
+        )
+
+        Spacer(modifier = Modifier.height(30.dp))
+
         Image(
             painter = painterResource(R.drawable.panther),
             contentDescription = "Logo",
@@ -54,14 +64,14 @@ fun SplashScreen(navController: NavHostController) {
         )
 
         Spacer(modifier = Modifier.height(30.dp))
-        
-        Text(
-            text = "Calling",
-            color = PrimaryPurple,
-            fontSize = 32.sp,
-            fontWeight = FontWeight.Bold
-        )
-        
+
+//        Text(
+//            text = "Calling",
+//            color = PrimaryPurple,
+//            fontSize = 32.sp,
+//            fontWeight = FontWeight.Bold
+//        )
+
         Text(
             text = "The stars are the campfire of those who walked before us",
             color = PrimaryPurple,
