@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1029242745997",
+    "project_id": "my-awsome-project-2006",
+    "storage_bucket": "my-awsome-project-2006.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1029242745997:android:ec8dc8daad11a830d81ec4",
+        "android_client_info": {
+          "package_name": "com.jermain.myfirstapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMH1xjsp7WmP1hxR7rNIOcsTpwVUt76Rk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -14,7 +14,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+// import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
@@ -26,7 +26,7 @@ import androidx.navigation.compose.rememberNavController
 import com.jermain.myfirstapp.ui.theme.CardBackground
 import com.jermain.myfirstapp.ui.theme.SafaricomGreen
 import com.jermain.myfirstapp.ui.theme.DarkBackground
-import com.jermain.myfirstapp.ui.theme.SafaricomGreen
+// import com.jermain.myfirstapp.ui.theme.SafaricomGreen
 
 
 @Composable

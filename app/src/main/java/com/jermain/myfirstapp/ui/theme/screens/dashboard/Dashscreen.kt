@@ -1,82 +1,41 @@
 package com.jermain.myfirstapp.ui.theme.screens.dashboard
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.CurrencyExchange
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.QueryStats
-import androidx.compose.material.icons.filled.Videocam
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.jermain.myfirstapp.navigation.ROUTE_ABOUT
-import com.jermain.myfirstapp.navigation.ROUTE_CALCULATOR
-import com.jermain.myfirstapp.navigation.ROUTE_HOME
-import com.jermain.myfirstapp.navigation.ROUTE_INTENT
-import com.jermain.myfirstapp.navigation.ROUTE_SAFARICOM
+import com.jermain.myfirstapp.navigation.*
 import com.jermain.myfirstapp.ui.theme.CardBackground
 import com.jermain.myfirstapp.ui.theme.DarkBackground
-import com.jermain.myfirstapp.ui.theme.MyFirstAppTheme
 import com.jermain.myfirstapp.ui.theme.PrimaryPurple
 import com.jermain.myfirstapp.ui.theme.SecondaryTeal
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashScreen(navController: NavHostController) {
-
     var selectedIndex by remember { mutableIntStateOf(0) }
 
     Scaffold(
         bottomBar = {
             NavigationBar(
                 containerColor = CardBackground,
-                contentColor = Color.White
+                tonalElevation = 8.dp
             ) {
                 NavigationBarItem(
                     icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
@@ -87,7 +46,6 @@ fun DashScreen(navController: NavHostController) {
                         selectedIconColor = PrimaryPurple,
                         selectedTextColor = PrimaryPurple,
                         unselectedIconColor = Color.Gray,
-                        unselectedTextColor = Color.Gray,
                         indicatorColor = DarkBackground
                     )
                 )
@@ -95,12 +53,11 @@ fun DashScreen(navController: NavHostController) {
                     icon = { Icon(Icons.Default.AddCircle, contentDescription = "Add") },
                     label = { Text("Add") },
                     selected = selectedIndex == 1,
-                    onClick = { selectedIndex = 1 },
+                    onClick = { selectedIndex = 1; navController.navigate(ROUTE_ADD) },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = PrimaryPurple,
                         selectedTextColor = PrimaryPurple,
                         unselectedIconColor = Color.Gray,
-                        unselectedTextColor = Color.Gray,
                         indicatorColor = DarkBackground
                     )
                 )
@@ -113,7 +70,6 @@ fun DashScreen(navController: NavHostController) {
                         selectedIconColor = PrimaryPurple,
                         selectedTextColor = PrimaryPurple,
                         unselectedIconColor = Color.Gray,
-                        unselectedTextColor = Color.Gray,
                         indicatorColor = DarkBackground
                     )
                 )
@@ -126,7 +82,6 @@ fun DashScreen(navController: NavHostController) {
                         selectedIconColor = PrimaryPurple,
                         selectedTextColor = PrimaryPurple,
                         unselectedIconColor = Color.Gray,
-                        unselectedTextColor = Color.Gray,
                         indicatorColor = DarkBackground
                     )
                 )
@@ -134,72 +89,67 @@ fun DashScreen(navController: NavHostController) {
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { /* Add action */ },
+                onClick = { navController.navigate(ROUTE_ADD) },
                 containerColor = PrimaryPurple,
                 contentColor = Color.Black
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Add")
+                Icon(Icons.Default.Add, contentDescription = "Add Product")
             }
-        },
-        content = { paddingValues ->
+        }
+    ) { paddingValues ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(DarkBackground)
+                .padding(paddingValues)
+        ) {
             Column(
                 modifier = Modifier
-                    .padding(paddingValues)
                     .fillMaxSize()
-                    .background(DarkBackground)
             ) {
-                Box {
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(350.dp),
-                        shape = RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp),
-                        colors = CardDefaults.cardColors(containerColor = CardBackground)
-                    ) {
-                        Column(modifier = Modifier.padding(25.dp)) {
-                            Text(text = "Hi Jermain", fontSize = 24.sp, color = Color.White, fontWeight = FontWeight.Bold)
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text(text = "Here are your projects", color = Color.Gray)
-                            
-                            Spacer(modifier = Modifier.height(30.dp))
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(280.dp),
+                    shape = RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp),
+                    colors = CardDefaults.cardColors(containerColor = CardBackground),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+                ) {
+                    Column(modifier = Modifier.padding(25.dp)) {
+                        Text(text = "Hi Jermain", fontSize = 28.sp, color = Color.White, fontWeight = FontWeight.ExtraBold)
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(text = "Manage your inventory efficiently", color = Color.Gray)
 
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .horizontalScroll(rememberScrollState())
-                            ) {
-                                ProjectCard(
-                                    title = "Safaricom",
-                                    subtitle = "M-Pesa UI",
-                                    icon = Icons.Default.CurrencyExchange,
-                                    color = Color.Green,
-                                    onClick = { navController.navigate(ROUTE_SAFARICOM) }
-                                )
-                                Spacer(modifier = Modifier.width(16.dp))
-                                ProjectCard(
-                                    title = "Calculator",
-                                    subtitle = "Modern Tool",
-                                    icon = Icons.Default.AddCircle,
-                                    color = PrimaryPurple,
-                                    onClick = { navController.navigate(ROUTE_CALCULATOR) }
-                                )
-                                Spacer(modifier = Modifier.width(16.dp))
-                                ProjectCard(
-                                    title = "Intents",
-                                    subtitle = "System Tools",
-                                    icon = Icons.Default.Info,
-                                    color = SecondaryTeal,
-                                    onClick = { navController.navigate(ROUTE_INTENT) }
-                                )
-                                Spacer(modifier = Modifier.width(16.dp))
-                                ProjectCard(
-                                    title = "Crypto",
-                                    subtitle = "Landing Page",
-                                    icon = Icons.Default.CurrencyExchange,
-                                    color = Color.White,
-                                    onClick = { navController.navigate(ROUTE_HOME) }
-                                )
-                            }
+                        Spacer(modifier = Modifier.height(30.dp))
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .horizontalScroll(rememberScrollState())
+                        ) {
+                            ProjectCard(
+                                title = "Inventory",
+                                subtitle = "View All",
+                                icon = Icons.Default.Inventory,
+                                color = PrimaryPurple,
+                                onClick = { navController.navigate(ROUTE_VIEW) }
+                            )
+                            Spacer(modifier = Modifier.width(16.dp))
+                            ProjectCard(
+                                title = "Safaricom",
+                                subtitle = "M-Pesa UI",
+                                icon = Icons.Default.CurrencyExchange,
+                                color = Color(0xFF00A651),
+                                onClick = { navController.navigate(ROUTE_SAFARICOM) }
+                            )
+                            Spacer(modifier = Modifier.width(16.dp))
+                            ProjectCard(
+                                title = "Calculator",
+                                subtitle = "Modern Tool",
+                                icon = Icons.Default.Calculate,
+                                color = SecondaryTeal,
+                                onClick = { navController.navigate(ROUTE_CALCULATOR) }
+                            )
                         }
                     }
                 }
@@ -211,7 +161,7 @@ fun DashScreen(navController: NavHostController) {
                         .padding(25.dp)
                 ) {
                     Text(
-                        text = "Personal Tasks",
+                        text = "Quick Actions",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White
@@ -219,64 +169,66 @@ fun DashScreen(navController: NavHostController) {
 
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    TaskItem(
-                        title = "NDA Review for website",
-                        time = "Today . 10pm",
-                        icon = Icons.Default.Videocam,
-                        iconColor = PrimaryPurple
+                    ActionItem(
+                        title = "Add New Product",
+                        desc = "Expand your inventory",
+                        icon = Icons.Default.AddBox,
+                        iconColor = PrimaryPurple,
+                        onClick = { navController.navigate(ROUTE_ADD) }
                     )
                     
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    TaskItem(
-                        title = "Email Reply for Green Project",
-                        time = "Today . 11pm",
-                        icon = Icons.Default.Email,
-                        iconColor = SecondaryTeal
+                    ActionItem(
+                        title = "System Intents",
+                        desc = "Call, SMS, Camera",
+                        icon = Icons.Default.FlashOn,
+                        iconColor = SecondaryTeal,
+                        onClick = { navController.navigate(ROUTE_INTENT) }
                     )
                 }
-            }
-        }
-    )
-}
-
-@Composable
-fun ProjectCard(title: String, subtitle: String, icon: androidx.compose.ui.graphics.vector.ImageVector, color: Color, onClick: () -> Unit) {
-    Card(
-        modifier = Modifier
-            .width(140.dp)
-            .height(180.dp)
-            .clickable { onClick() },
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = DarkBackground)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = title,
-                modifier = Modifier.size(40.dp),
-                tint = color
-            )
-            Column {
-                Text(text = title, fontSize = 16.sp, color = Color.White, fontWeight = FontWeight.Bold)
-                Text(text = subtitle, fontSize = 12.sp, color = Color.Gray)
             }
         }
     }
 }
 
 @Composable
-fun TaskItem(title: String, time: String, icon: androidx.compose.ui.graphics.vector.ImageVector, iconColor: Color) {
+fun ProjectCard(title: String, subtitle: String, icon: androidx.compose.ui.graphics.vector.ImageVector, color: Color, onClick: () -> Unit) {
     Card(
-        modifier = Modifier.fillMaxWidth().height(80.dp),
+        modifier = Modifier
+            .width(150.dp)
+            .height(120.dp)
+            .clickable { onClick() },
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(containerColor = DarkBackground),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = title,
+                modifier = Modifier.size(32.dp),
+                tint = color
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = title, fontSize = 16.sp, color = Color.White, fontWeight = FontWeight.Bold)
+            Text(text = subtitle, fontSize = 12.sp, color = Color.Gray)
+        }
+    }
+}
+
+@Composable
+fun ActionItem(title: String, desc: String, icon: androidx.compose.ui.graphics.vector.ImageVector, iconColor: Color, onClick: () -> Unit) {
+    Card(
+        modifier = Modifier.fillMaxWidth().height(80.dp).clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = CardBackground)
+        colors = CardDefaults.cardColors(containerColor = CardBackground),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxSize().padding(15.dp),
@@ -290,8 +242,8 @@ fun TaskItem(title: String, time: String, icon: androidx.compose.ui.graphics.vec
             )
             Spacer(modifier = Modifier.width(15.dp))
             Column {
-                Text(text = title, fontSize = 15.sp, fontWeight = FontWeight.Bold, color = Color.White)
-                Text(text = time, fontSize = 12.sp, color = Color.Gray)
+                Text(text = title, fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                Text(text = desc, fontSize = 12.sp, color = Color.Gray)
             }
         }
     }
@@ -300,7 +252,5 @@ fun TaskItem(title: String, time: String, icon: androidx.compose.ui.graphics.vec
 @Preview(showBackground = true)
 @Composable
 fun DashScreenPreview() {
-    MyFirstAppTheme {
-        DashScreen(rememberNavController())
-    }
+    DashScreen(rememberNavController())
 }

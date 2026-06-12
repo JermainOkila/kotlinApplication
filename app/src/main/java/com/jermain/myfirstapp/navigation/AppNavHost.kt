@@ -11,6 +11,9 @@ import com.jermain.myfirstapp.ui.theme.screens.dashboard.DashScreen
 import com.jermain.myfirstapp.ui.theme.screens.homescreen.HomeScreen
 import com.jermain.myfirstapp.ui.theme.screens.intent.IntentScreen
 import com.jermain.myfirstapp.ui.theme.screens.loginscreen.LoginScreen
+import com.jermain.myfirstapp.ui.theme.screens.product.AddProductScreen
+import com.jermain.myfirstapp.ui.theme.screens.product.UpdateProductScreen
+import com.jermain.myfirstapp.ui.theme.screens.product.ViewProductsScreen
 import com.jermain.myfirstapp.ui.theme.screens.registerscreen.RegisterScreen
 import com.jermain.myfirstapp.ui.theme.screens.safaricom.SafaricomScreen
 import com.jermain.myfirstapp.ui.theme.screens.splash.SplashScreen
@@ -52,6 +55,15 @@ fun AppNavHost(
         }
         composable(ROUTE_SAFARICOM) {
             SafaricomScreen(navController)
+        }
+        composable(ROUTE_ADD){
+            AddProductScreen(navController)
+        }
+        composable(ROUTE_UPDATE){
+            UpdateProductScreen(navController)
+        }
+        composable(ROUTE_VIEW){
+            ViewProductsScreen(navController)
         }
     }
 }
