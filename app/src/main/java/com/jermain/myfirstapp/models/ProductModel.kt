@@ -2,7 +2,7 @@ package com.jermain.myfirstapp.models
 
 import com.jermain.myfirstapp.R
 
-data class Product(
+data class ProductModel(
     val name: String = "",
     val category: String = "",
     val price: String = "",

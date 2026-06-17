@@ -23,8 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.jermain.myfirstapp.R
-import com.jermain.myfirstapp.models.Product
+import com.jermain.myfirstapp.models.ProductModel
 import com.jermain.myfirstapp.navigation.ROUTE_UPDATE
 import com.jermain.myfirstapp.ui.theme.CardBackground
 import com.jermain.myfirstapp.ui.theme.DarkBackground
@@ -33,10 +32,10 @@ import com.jermain.myfirstapp.ui.theme.PrimaryPurple
 @Composable
 fun ViewProductsScreen(navController: NavController) {
     val dummyProducts = listOf(
-        Product("Smart Watch", "Electronics", "199.99", "10", "A high-quality smart watch."),
-        Product("Wireless Earbuds", "Electronics", "89.99", "25", "Noise-cancelling earbuds."),
-        Product("Running Shoes", "Fitness", "120.00", "15", "Comfortable running shoes."),
-        Product("Backpack", "Travel", "45.50", "30", "Durable travel backpack.")
+        ProductModel("Smart Watch", "Electronics", "199.99", "10", "A high-quality smart watch."),
+        ProductModel("Wireless Earbuds", "Electronics", "89.99", "25", "Noise-cancelling earbuds."),
+        ProductModel("Running Shoes", "Fitness", "120.00", "15", "Comfortable running shoes."),
+        ProductModel("Backpack", "Travel", "45.50", "30", "Durable travel backpack.")
     )
 
     Box(
@@ -74,7 +73,7 @@ fun ViewProductsScreen(navController: NavController) {
 }
 
 @Composable
-fun ProductItem(product: Product, navController: NavController) {
+fun ProductItem(product: ProductModel, navController: NavController) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
