@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.jermain.myfirstapp.data.ProductViewModel
 import com.jermain.myfirstapp.ui.theme.CardBackground
 import com.jermain.myfirstapp.ui.theme.DarkBackground
 import com.jermain.myfirstapp.ui.theme.PrimaryPurple
@@ -38,7 +39,7 @@ fun AddProductScreen(navController: NavController) {
     var productCategory by remember { mutableStateOf("") }
     var productPrice by remember { mutableStateOf("") }
     var productQuantity by remember { mutableStateOf("") }
-    var productDescription by remember { mutableStateOf("") }
+//    var productDescription by remember { mutableStateOf("") }
 
     val imageUri = rememberSaveable { mutableStateOf<Uri?>(null) }
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -161,7 +162,7 @@ fun AddProductScreen(navController: NavController) {
                         OutlinedTextField(
                             value = productPrice,
                             onValueChange = { productPrice = it },
-                            label = { Text("Price ($)") },
+                            label = { Text("Price (Ksh)") },
                             modifier = Modifier.weight(1f).padding(vertical = 8.dp),
                             shape = RoundedCornerShape(12.dp),
                             colors = textFieldColors,
@@ -178,15 +179,15 @@ fun AddProductScreen(navController: NavController) {
                         )
                     }
 
-                    OutlinedTextField(
-                        value = productDescription,
-                        onValueChange = { productDescription = it },
-                        label = { Text("Description") },
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp).height(120.dp),
-                        shape = RoundedCornerShape(12.dp),
-                        colors = textFieldColors,
-                        maxLines = 4
-                    )
+//                    OutlinedTextField(
+//                        value = productDescription,
+//                        onValueChange = { productDescription = it },
+//                        label = { Text("Description") },
+//                        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp).height(120.dp),
+//                        shape = RoundedCornerShape(12.dp),
+//                        colors = textFieldColors,
+//                        maxLines = 4
+//                    )
 
                     Spacer(modifier = Modifier.height(32.dp))
 
@@ -205,6 +206,15 @@ fun AddProductScreen(navController: NavController) {
 
                         Button(
                             onClick = {
+                                val addproduct= ProductViewModel()
+                                addproduct.uploadProduct(
+                                    imageUri.value,
+                                    productName,
+                                    productCategory,
+                                    productPrice,
+                                    productQuantity,
+                                    context,navController
+                                )
                                 /* Save logic */
                             },
                             modifier = Modifier.weight(1f).height(56.dp),

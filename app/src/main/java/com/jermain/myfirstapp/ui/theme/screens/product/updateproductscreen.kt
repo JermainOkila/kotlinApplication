@@ -160,7 +160,7 @@ fun UpdateProductScreen(navController: NavController) {
                         OutlinedTextField(
                             value = productPrice,
                             onValueChange = { productPrice = it },
-                            label = { Text("Price ($)") },
+                            label = { Text("Price (Ksh)") },
                             modifier = Modifier.weight(1f).padding(vertical = 8.dp),
                             shape = RoundedCornerShape(12.dp),
                             colors = textFieldColors,

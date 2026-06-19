@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.google.firebase.database.FirebaseDatabase
 import com.jermain.myfirstapp.models.product
+import com.jermain.myfirstapp.navigation.ROUTE_DASHBOARD
 import com.jermain.myfirstapp.navigation.ROUTE_VIEW
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -108,6 +109,47 @@ val product: List<product> = _product
         }.addOnFailureListener {
             Toast.makeText(context,"Product not deleted", Toast.LENGTH_LONG).show()
         }
+    }
+    fun updateproduct(productId: String,
+                      imageUri: Uri?,
+                      productname: String,
+                      productcategory: String,
+                      productquantity: String,
+                      productprice: String,
+                      context: Context,
+                      navController: NavController){
+        viewModelScope.launch(Dispatchers.IO){
+            try {
+                val uploadImageUrl = imageUri?.let { uploadToCloudinary(context,it) }
+                val updateData = mutableMapOf<String, Any?>(
+                    "id" to productId,
+                    "productname" to productname,
+                    "productcategory" to productcategory,
+                    "productprice" to productprice,
+                    "productquantity" to productquantity
+
+                )
+                if(uploadImageUrl != null){
+                    updateData["imageurl"] = uploadImageUrl
+                }
+                val ref = FirebaseDatabase.getInstance()
+                    .getReference("product").child(productId)
+                ref.updateChildren(updateData).await()
+                fetchproduct(context)
+                withContext(Dispatchers.Main){
+                    Toast.makeText(context,"Product updated successfully",
+                        Toast.LENGTH_LONG).show()
+                    navController.navigate(ROUTE_DASHBOARD)
+                }
+            }catch (e: Exception){
+                withContext(Dispatchers.Main){
+                    Toast.makeText(context,"update failed",
+                        Toast.LENGTH_LONG).show()
+                }
+            }
+
+        }
+
     }
     
     
