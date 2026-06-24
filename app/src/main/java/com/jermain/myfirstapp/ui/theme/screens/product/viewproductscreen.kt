@@ -1,6 +1,5 @@
 package com.jermain.myfirstapp.ui.theme.screens.product
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -23,7 +22,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.jermain.myfirstapp.models.ProductModel
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
+import coil3.compose.AsyncImage
+import com.jermain.myfirstapp.data.ProductViewModel
+import com.jermain.myfirstapp.models.product
 import com.jermain.myfirstapp.navigation.ROUTE_UPDATE
 import com.jermain.myfirstapp.ui.theme.CardBackground
 import com.jermain.myfirstapp.ui.theme.DarkBackground
@@ -31,12 +34,13 @@ import com.jermain.myfirstapp.ui.theme.PrimaryPurple
 
 @Composable
 fun ViewProductsScreen(navController: NavController) {
-    val dummyProducts = listOf(
-        ProductModel("Smart Watch", "Electronics", "199.99", "10", "A high-quality smart watch."),
-        ProductModel("Wireless Earbuds", "Electronics", "89.99", "25", "Noise-cancelling earbuds."),
-        ProductModel("Running Shoes", "Fitness", "120.00", "15", "Comfortable running shoes."),
-        ProductModel("Backpack", "Travel", "45.50", "30", "Durable travel backpack.")
-    )
+    val context = LocalContext.current
+    val productViewModel = ProductViewModel()
+    val products = productViewModel.product
+
+    LaunchedEffect(Unit) {
+        productViewModel.fetchproduct(context)
+    }
 
     Box(
         modifier = Modifier
@@ -60,12 +64,18 @@ fun ViewProductsScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                items(dummyProducts) { product ->
-                    ProductItem(product, navController)
+            if (products.isEmpty()) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator(color = PrimaryPurple)
+                }
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(products) { product ->
+                        ProductItem(product, navController, productViewModel)
+                    }
                 }
             }
         }
@@ -73,7 +83,8 @@ fun ViewProductsScreen(navController: NavController) {
 }
 
 @Composable
-fun ProductItem(product: ProductModel, navController: NavController) {
+fun ProductItem(product: product, navController: NavController, viewModel: ProductViewModel) {
+    val context = LocalContext.current
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
@@ -94,32 +105,37 @@ fun ProductItem(product: ProductModel, navController: NavController) {
                     .background(Color(0xFF252525)),
                 contentAlignment = Alignment.Center
             ) {
-                Image(
-                    painter = painterResource(product.imageRes),
-                    contentDescription = product.name,
+                val imageUrl = product.imageurl?.replace("upload/", "upload/w_300,f_auto,q_auto/")
+                AsyncImage(
+                    model = imageUrl,
+                    contentDescription = product.productname,
                     modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Crop,
+                    placeholder = painterResource(id = android.R.drawable.ic_menu_gallery),
+                    error = painterResource(id = android.R.drawable.stat_notify_error)
                 )
             }
 
             Spacer(modifier = Modifier.width(16.dp))
 
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = product.name, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color.White)
-                Text(text = product.category, fontSize = 14.sp, color = Color.Gray)
+                Text(text = product.productname ?: "No Name", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                Text(text = product.productcategory ?: "No Category", fontSize = 14.sp, color = Color.Gray)
                 Spacer(modifier = Modifier.height(4.dp))
                 Row {
-                    Text(text = "Price: $${product.price}", fontSize = 14.sp, fontWeight = FontWeight.Medium, color = PrimaryPurple)
+                    Text(text = "Price: Ksh ${product.productprice}", fontSize = 14.sp, fontWeight = FontWeight.Medium, color = PrimaryPurple)
                     Spacer(modifier = Modifier.width(16.dp))
-                    Text(text = "Qty: ${product.quantity}", fontSize = 14.sp, color = Color.Gray)
+                    Text(text = "Qty: ${product.productquantity}", fontSize = 14.sp, color = Color.Gray)
                 }
             }
 
             Column(horizontalAlignment = Alignment.End) {
-                IconButton(onClick = { navController.navigate(ROUTE_UPDATE) }) {
+                IconButton(onClick = { navController.navigate(ROUTE_UPDATE + "/${product.project_id}") }) {
                     Icon(Icons.Default.Edit, contentDescription = "Edit", tint = PrimaryPurple)
                 }
-                IconButton(onClick = { /* Delete logic */ }) {
+                IconButton(onClick = { 
+                    product.project_id?.let { viewModel.deleteproduct(it, context) }
+                }) {
                     Icon(Icons.Default.Delete, contentDescription = "Delete", tint = Color(0xFFCF6679))
                 }
             }

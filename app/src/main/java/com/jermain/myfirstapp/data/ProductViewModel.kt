@@ -34,10 +34,26 @@ class ProductViewModel: ViewModel() {
         context: Context,
         navController: NavController
     ) {
+        if (productname.isBlank() || productcategory.isBlank() || productprice.isBlank() || productquantity.isBlank()) {
+            Toast.makeText(context, "Please fill all fields", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val uploadedImageUrl = imageurl?.let { uploadToCloudinary(context, it) }
-                val ref = FirebaseDatabase.getInstance().getReference("Products").push()
+                var uploadedImageUrl: String? = null
+                if (imageurl != null) {
+                    try {
+                        uploadedImageUrl = uploadToCloudinary(context, imageurl)
+                    } catch (e: Exception) {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(context, "Image upload failed: ${e.message}", Toast.LENGTH_LONG).show()
+                        }
+                        return@launch
+                    }
+                }
+
+                val ref = FirebaseDatabase.getInstance().getReference("product").push()
                 val productdata = mapOf(
                     "id" to ref.key,
                     "productname" to productname,
@@ -57,7 +73,7 @@ class ProductViewModel: ViewModel() {
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
-                        context, "Failed to save",
+                        context, "Firebase Error: ${e.message}",
                         Toast.LENGTH_LONG
                     ).show()
                 }
@@ -75,8 +91,12 @@ class ProductViewModel: ViewModel() {
             .addFormDataPart("upload_preset",uploadPreset).build()
         val request= Request.Builder().url(Cloudinaryurl).post(requestBody).build()
         val response= OkHttpClient().newCall(request).execute()
-        if (!response.isSuccessful)throw Exception("Upload failed")
         val responseBody=response.body?.string()
+        if (!response.isSuccessful) {
+            val errorMessage = Regex("\"message\":\"(.*?)\"").find(responseBody ?: "")?.groupValues?.get(1)
+                ?: "Upload failed with code ${response.code}"
+            throw Exception(errorMessage)
+        }
         val secureUrl= Regex("\"secure_url\":\"(.*?)\"")
             .find(responseBody ?:"")?.groupValues?.get(1)
         return secureUrl ?: throw Exception("failed to get image url")

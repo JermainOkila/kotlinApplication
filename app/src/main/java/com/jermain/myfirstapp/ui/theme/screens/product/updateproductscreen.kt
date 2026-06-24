@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.jermain.myfirstapp.data.ProductViewModel
 import com.jermain.myfirstapp.ui.theme.CardBackground
 import com.jermain.myfirstapp.ui.theme.DarkBackground
 import com.jermain.myfirstapp.ui.theme.PrimaryPurple
@@ -40,6 +42,7 @@ fun UpdateProductScreen(navController: NavController) {
     var productDescription by remember { mutableStateOf("A high-quality smart watch.") }
     var productCategory by remember { mutableStateOf("Electronics") }
 
+    val context = LocalContext.current
     val imageUri = rememberSaveable { mutableStateOf<Uri?>(null) }
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         uri?.let { imageUri.value = it }
@@ -203,7 +206,17 @@ fun UpdateProductScreen(navController: NavController) {
                         }
 
                         Button(
-                            onClick = { /* Update logic */ },
+                            onClick = {
+                                val updateproduct= ProductViewModel()
+                                updateproduct.uploadProduct(
+                                    imageUri.value,
+                                    productName,
+                                    productCategory,
+                                    productPrice,
+                                    productQuantity,
+                                    context,navController)
+                            /* Update logic */
+                            },
                             modifier = Modifier.weight(1f).height(56.dp),
                             shape = RoundedCornerShape(16.dp),
                             colors = ButtonDefaults.buttonColors(containerColor = PrimaryPurple)
