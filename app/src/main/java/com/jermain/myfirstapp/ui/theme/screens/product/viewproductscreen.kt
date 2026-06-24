@@ -24,7 +24,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import com.jermain.myfirstapp.data.ProductViewModel
 import com.jermain.myfirstapp.models.product
 import com.jermain.myfirstapp.navigation.ROUTE_UPDATE
@@ -35,7 +38,7 @@ import com.jermain.myfirstapp.ui.theme.PrimaryPurple
 @Composable
 fun ViewProductsScreen(navController: NavController) {
     val context = LocalContext.current
-    val productViewModel = ProductViewModel()
+    val productViewModel: ProductViewModel = viewModel()
     val products = productViewModel.product
 
     LaunchedEffect(Unit) {
@@ -105,9 +108,17 @@ fun ProductItem(product: product, navController: NavController, viewModel: Produ
                     .background(Color(0xFF252525)),
                 contentAlignment = Alignment.Center
             ) {
-                val imageUrl = product.imageurl?.replace("upload/", "upload/w_300,f_auto,q_auto/")
+                val imageUrl = if (!product.imageurl.isNullOrEmpty()) {
+                    product.imageurl.replace("upload/", "upload/w_300,f_auto,q_auto/")
+                } else {
+                    null
+                }
+
                 AsyncImage(
-                    model = imageUrl,
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(imageUrl)
+                        .crossfade(true)
+                        .build(),
                     contentDescription = product.productname,
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop,
